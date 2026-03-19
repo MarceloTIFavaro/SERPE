@@ -2,8 +2,9 @@ TRUNCATE TABLE empresa RESTART IDENTITY CASCADE
 CREATE TABLE empresa (
 	cnpj VARCHAR(14) NOT NULL,
 	nome_emp VARCHAR(100) NOT NULL,
+	senha VARCHAR(255), -- adicionei atributo senha para gerar login no site	
 	nome_resp VARCHAR(50),
-	email_emp VARCHAR(50),
+	email_emp VARCHAR(50) UNIQUE, -- deixei e-mail unique para mais segurança
 	telefone_emp VARCHAR(15),
 	CONSTRAINT pk_empresa PRIMARY KEY (cnpj)
 );
@@ -31,7 +32,7 @@ CREATE TABLE venda (
 	id_venda SERIAL,
 	id_cliente INT NOT NULL,
 	quantidade INT,
-	data_venda DATE DEFAULT CURRENT_TIMESTAMP,
+	data_venda TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	total DECIMAL (10,2),
 	CONSTRAINT pk_venda PRIMARY KEY (id_venda),
 	CONSTRAINT pk_venda_cli FOREIGN KEY (id_cliente) REFERENCES cliente

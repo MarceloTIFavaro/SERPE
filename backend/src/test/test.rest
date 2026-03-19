@@ -1,0 +1,33 @@
+@baseUrl = http://localhost:3000
+@token = COLE_O_TOKEN_AQUI_DEPOIS_DO_LOGIN
+
+### 1. Registrar Empresa
+POST {{baseUrl}}/auth/registro
+Content-Type: application/json
+
+{
+  "cnpj": "12345678901234",
+  "nome_emp": "Empresa do Marcelo",
+  "nome_resp": "Marcelo",
+  "email_emp": "empresa@email.com",
+  "telefone_emp": "11999998888",
+  "senha": "123456"
+}
+
+###
+
+### 2. Login (Gera o Token)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "empresa@email.com",
+  "senha": "123456"
+}
+
+###
+
+### 3. Exemplo de Rota Protegida (Se você criar uma)
+# Esta rota só funcionaria se você passasse o token recebido no login
+GET {{baseUrl}}/auth/perfil
+Authorization: Bearer {{token}}
