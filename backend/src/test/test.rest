@@ -1,15 +1,18 @@
 @baseUrl = http://localhost:3000
-@token = COLE_O_TOKEN_AQUI_DEPOIS_DO_LOGIN
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbnBqIjoiNDg4ODk4NDg4MzkiLCJub21lIjoiRW1wcmVzYSBUZXN0ZXIiLCJpYXQiOjE3NzYwODk2OTgsImV4cCI6MTc3NjExODQ5OH0.RbOmt3bJNQ4DRC-ImaWET6j8HvHWv8mMMRG0mF5QqKg
+@produtoId = 1
+@clienteId = 1
+@vendaId = 1
 
 ### 1. Registrar Empresa
 POST {{baseUrl}}/auth/registro
 Content-Type: application/json
 
 {
-  "cnpj": "12345678901234",
-  "nome_emp": "Empresa do Marcelo",
+  "cnpj": "48889848839",
+  "nome_emp": "Empresa Tester",
   "nome_resp": "Marcelo",
-  "email_emp": "empresa@email.com",
+  "email_emp": "teste@email.com",
   "telefone_emp": "11999998888",
   "senha": "123456"
 }
@@ -17,17 +20,124 @@ Content-Type: application/json
 ###
 
 ### 2. Login (Gera o Token)
+# @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "empresa@email.com",
+  "email": "teste@email.com",
   "senha": "123456"
 }
 
 ###
 
-### 3. Exemplo de Rota Protegida (Se você criar uma)
-# Esta rota só funcionaria se você passasse o token recebido no login
+### 3. Perfil (Rota protegida)
+# Copie o token do login e cole em @token (linha 2),
+# ou use diretamente:
+# Authorization: Bearer {{login.response.body.token}}
 GET {{baseUrl}}/auth/perfil
+Authorization: Bearer {{token}}
+
+###
+
+### 4. Criar Produto
+# @name criarProduto
+POST {{baseUrl}}/produtos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome_prod": "Mandioca-Mansa",
+  "preco_venda": 35.00,
+  "custo_prod": 28.00,
+  "qnt_estoque": 10
+}
+
+###
+
+### 5. Listar Produtos
+GET {{baseUrl}}/produtos
+Authorization: Bearer {{token}}
+
+###
+
+### 6. Buscar Produto por ID
+GET {{baseUrl}}/produtos/{{produtoId}}
+Authorization: Bearer {{token}}
+
+###
+
+### 7. Atualizar Produto
+PUT {{baseUrl}}/produtos/{{produtoId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "preco_venda": 39.90,
+  "qnt_estoque": 25
+}
+
+###
+
+### 8. Criar Cliente
+# @name criarCliente
+POST {{baseUrl}}/clientes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nome_cli": "Marcelo Henrique",
+  "email_cli": "marmelo@email.com",
+  "telefone_cli": "1199999-8888"
+}
+
+###
+
+### 9. Listar Clientes
+GET {{baseUrl}}/clientes
+Authorization: Bearer {{token}}
+
+###
+
+### 10. Buscar Cliente por ID
+GET {{baseUrl}}/clientes/{{clienteId}}
+Authorization: Bearer {{token}}
+
+###
+
+### 11. Criar Venda (com itens)
+# @name criarVenda
+POST {{baseUrl}}/vendas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id_cliente": {{clienteId}},
+  "itens": [
+    { "id_prod": {{produtoId}}, "quantidade": 2 }
+  ]
+}
+
+###
+
+### 12. Listar Vendas
+GET {{baseUrl}}/vendas
+Authorization: Bearer {{token}}
+
+###
+
+### 13. Buscar Venda Detalhada por ID (itens + subtotais)
+GET {{baseUrl}}/vendas/{{vendaId}}
+Authorization: Bearer {{token}}
+
+###
+
+### 14. Remover Produto
+DELETE {{baseUrl}}/produtos/{{produtoId}}
+Authorization: Bearer {{token}}
+
+###
+
+### 15. Remover Cliente
+DELETE {{baseUrl}}/clientes/{{clienteId}}
 Authorization: Bearer {{token}}
