@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const authModel = require('../models/mdlAuth');
+const mdlAuth = require('../models/mdlAuth');
 
-const SECRET = 'segredo_super_forte';
+const SECRET = process.env.JWT_SECRET || 'segredo_super_forte';
 
 exports.registerEmpresa = async (dados) => {
-    const empresaExistente = await authModel.buscarPorEmail(dados.email_emp);
+    const empresaExistente = await mdlAuth.buscarPorEmail(dados.email_emp);
     if (empresaExistente) {
         throw new Error('Email já cadastrado');
     }
@@ -13,7 +13,7 @@ exports.registerEmpresa = async (dados) => {
     // Gera o hash da senha antes de salvar
     const senhaHash = await bcrypt.hash(dados.senha, 10);
 
-    await authModel.inserirEmpresa({
+    await mdlAuth.inserirEmpresa({
         ...dados,
         senha: senhaHash
     });
@@ -22,7 +22,7 @@ exports.registerEmpresa = async (dados) => {
 };
 
 exports.loginEmpresa = async (email, senha) => {
-    const empresa = await authModel.buscarPorEmail(email);
+    const empresa = await mdlAuth.buscarPorEmail(email);
     if (!empresa) {
         throw new Error('Empresa não encontrada');
     }

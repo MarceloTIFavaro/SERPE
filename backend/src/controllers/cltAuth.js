@@ -11,8 +11,12 @@ exports.registrar = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { email, senha } = req.body;
-        const result = await srcAuth.loginEmpresa(email, senha);
+        const { email, email_emp, senha } = req.body;
+        const emailFinal = email_emp || email;
+        if (!emailFinal || !senha) {
+            return res.status(400).json({ erro: 'Informe email/email_emp e senha' });
+        }
+        const result = await srcAuth.loginEmpresa(emailFinal, senha);
         res.json(result);
     } catch (error) {
         res.status(401).json({ erro: error.message });
