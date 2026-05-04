@@ -4,6 +4,7 @@ node_modules/
 # variáveis de ambiente
 .env
 .env.*
+!.env.example
 
 # logs
 *.log
