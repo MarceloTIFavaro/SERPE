@@ -73,6 +73,41 @@ exports.criarVendaComItens = async ({ id_cliente, itens }) => {
   }
 };
 
+exports.removerVendaEAtualizarEstoque = async (id_venda) => {
+  const client = await db.connect();
+  try {
+    await client.query('BEGIN');
+
+    // 1. Busca itens da venda para devolver ao estoque
+    const itensRes = await client.query(
+      `SELECT id_prod, quantidade FROM itens_venda WHERE id_venda = $1`,
+      [id_venda]
+    );
+
+    // 2. Devolve para o estoque
+    for (const item of itensRes.rows) {
+      await client.query(
+        `UPDATE produto SET qnt_estoque = qnt_estoque + $1 WHERE id_prod = $2`,
+        [item.quantidade, item.id_prod]
+      );
+    }
+
+    // 3. Deleta itens da venda
+    await client.query(`DELETE FROM itens_venda WHERE id_venda = $1`, [id_venda]);
+
+    // 4. Deleta a venda
+    const resVenda = await client.query(`DELETE FROM venda WHERE id_venda = $1`, [id_venda]);
+
+    await client.query('COMMIT');
+    return resVenda.rowCount;
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
 exports.listar = async () => {
   const result = await db.query(
     `SELECT v.id_venda, v.id_cliente, c.nome_cli, v.data_venda, v.total

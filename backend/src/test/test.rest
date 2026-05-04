@@ -132,12 +132,12 @@ Authorization: Bearer {{token}}
 
 ###
 
-### 14. Remover Produto
-DELETE {{baseUrl}}/produtos/{{produtoId}}
+### 15. Remover Cliente
+DELETE {{baseUrl}}/clientes/{{clienteId}}
 Authorization: Bearer {{token}}
 
 ###
 
-### 15. Remover Cliente
-DELETE {{baseUrl}}/clientes/{{clienteId}}
+### 16. Remover Venda (Cancela e devolve estoque)
+DELETE {{baseUrl}}/vendas/{{vendaId}}
 Authorization: Bearer {{token}}

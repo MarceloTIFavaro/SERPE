@@ -1,4 +1,11 @@
-TRUNCATE TABLE empresa RESTART IDENTITY CASCADE
+-- Limpar tabelas existentes
+DROP TABLE IF EXISTS itens_venda CASCADE;
+DROP TABLE IF EXISTS venda CASCADE;
+DROP TABLE IF EXISTS cliente CASCADE;
+DROP TABLE IF EXISTS produto CASCADE;
+DROP TABLE IF EXISTS empresa CASCADE;
+
+-- Criar tabela empresa
 CREATE TABLE empresa (
 	cnpj VARCHAR(14) NOT NULL,
 	nome_emp VARCHAR(100) NOT NULL,
@@ -9,7 +16,7 @@ CREATE TABLE empresa (
 	CONSTRAINT pk_empresa PRIMARY KEY (cnpj)
 );
 
-TRUNCATE TABLE produto RESTART IDENTITY CASCADE
+-- Criar tabela produto
 CREATE TABLE produto (
 	id_prod SERIAL,
 	nome_prod VARCHAR(50) NOT NULL,
@@ -19,7 +26,7 @@ CREATE TABLE produto (
 	CONSTRAINT pk_produto PRIMARY KEY (id_prod)
 );
 
-TRUNCATE TABLE cliente RESTART IDENTITY CASCADE
+-- Criar tabela cliente
 CREATE TABLE cliente (
 	id_cliente SERIAL,
 	nome_cli VARCHAR(50) NOT NULL,
@@ -28,6 +35,7 @@ CREATE TABLE cliente (
 	CONSTRAINT pk_cli PRIMARY KEY (id_cliente)
 );
 
+-- Criar tabela venda
 CREATE TABLE venda (
 	id_venda SERIAL,
 	id_cliente INT NOT NULL,
@@ -38,6 +46,7 @@ CREATE TABLE venda (
 	CONSTRAINT pk_venda_cli FOREIGN KEY (id_cliente) REFERENCES cliente
 );
 
+-- Criar tabela itens_venda
 CREATE TABLE itens_venda (
     id_item SERIAL,
     id_venda INT NOT NULL,
@@ -72,6 +81,7 @@ VALUES (1, 1, 2, 35.00);
 INSERT INTO itens_venda (id_venda, id_prod, quantidade, preco_unitario) 
 VALUES (1, 2, 2, 50.00);
 
+-- Validação
 SELECT 
     c.nome_cli AS Cliente,
     p.nome_prod AS Produto,
@@ -82,5 +92,3 @@ FROM itens_venda iv
 JOIN venda v ON iv.id_venda = v.id_venda
 JOIN cliente c ON v.id_cliente = c.id_cliente
 JOIN produto p ON iv.id_prod = p.id_prod;
-
-
