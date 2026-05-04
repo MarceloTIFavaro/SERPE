@@ -1,4 +1,4 @@
-# SERPE - Sistema de Gerenciamento de Vendas e Estoque
+# SERPE - Sistema ERP para Pequenas Empresas
 
 Este é o back-end do projeto SERPE, um sistema desenvolvido para facilitar o controle de estoque, gerenciamento de clientes e vendas de uma empresa. O projeto foi construído utilizando Node.js com uma arquitetura organizada e segura.
 
