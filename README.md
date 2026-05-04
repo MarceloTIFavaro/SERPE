@@ -54,7 +54,17 @@ npm install
 ```
 
 ### Passo 4: Executar o Servidor
-Para desenvolvimento com atualização automática:
+
+Para rodar o servidor normalmente:
+```bash
+node server.js
+```
+Ou via script do npm:
+```bash
+npm start
+```
+
+Para desenvolvimento (com atualização automática via nodemon):
 ```bash
 npm run dev
 ```
