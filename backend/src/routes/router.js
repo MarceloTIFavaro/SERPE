@@ -6,10 +6,11 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const produtoController = require('../controllers/cltProduto');
 const clienteController = require('../controllers/cltCliente');
 const vendaController = require('../controllers/cltVenda');
+const rateLimiter = require('../middlewares/rateLimiter');
 
 // Rotas Públicas
-router.post('/auth/registro', authController.registrar);
-router.post('/auth/login', authController.login);
+router.post('/auth/registro', rateLimiter, authController.registrar);
+router.post('/auth/login', rateLimiter, authController.login);
 
 // Perfil (empresa logada)
 router.get('/auth/perfil', authMiddleware, (req, res) => res.json(req.empresa));
@@ -30,5 +31,6 @@ router.delete('/clientes/:id', authMiddleware, clienteController.remover);
 router.get('/vendas', authMiddleware, vendaController.listar);
 router.get('/vendas/:id', authMiddleware, vendaController.buscarPorId);
 router.post('/vendas', authMiddleware, vendaController.criar);
+router.delete('/vendas/:id', authMiddleware, vendaController.remover);
 
 module.exports = router;

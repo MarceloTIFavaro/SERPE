@@ -1,24 +1,25 @@
 const srcAuth = require('../services/srcAuth');
+const AppError = require('../utils/AppError');
 
-exports.registrar = async (req, res) => {
+exports.registrar = async (req, res, next) => {
     try {
         const result = await srcAuth.registerEmpresa(req.body);
         res.status(201).json(result);
     } catch (error) {
-        res.status(400).json({ erro: error.message });
+        next(error);
     }
 };
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
     try {
         const { email, email_emp, senha } = req.body;
         const emailFinal = email_emp || email;
         if (!emailFinal || !senha) {
-            return res.status(400).json({ erro: 'Informe email/email_emp e senha' });
+            throw new AppError('Informe email/email_emp e senha', 400);
         }
         const result = await srcAuth.loginEmpresa(emailFinal, senha);
         res.json(result);
     } catch (error) {
-        res.status(401).json({ erro: error.message });
+        next(error);
     }
 };
