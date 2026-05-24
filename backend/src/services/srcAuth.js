@@ -11,7 +11,6 @@ exports.registerEmpresa = async (dados) => {
         throw new AppError('Email já cadastrado', 400);
     }
 
-    // Gera o hash da senha antes de salvar
     const senhaHash = await bcrypt.hash(dados.senha, 10);
 
     try {
@@ -35,7 +34,6 @@ exports.loginEmpresa = async (email, senha) => {
         throw new AppError('Empresa não encontrada', 404);
     }
 
-    // Compara a senha digitada com o hash do banco
     const senhaValida = await bcrypt.compare(senha, empresa.senha);
     if (!senhaValida) {
         throw new AppError('Senha inválida', 401);

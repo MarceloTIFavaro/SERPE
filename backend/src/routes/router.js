@@ -8,14 +8,11 @@ const clienteController = require('../controllers/cltCliente');
 const vendaController = require('../controllers/cltVenda');
 const rateLimiter = require('../middlewares/rateLimiter');
 
-// Rotas Públicas
 router.post('/auth/registro', rateLimiter, authController.registrar);
 router.post('/auth/login', rateLimiter, authController.login);
 
-// Perfil (empresa logada)
 router.get('/auth/perfil', authMiddleware, (req, res) => res.json(req.empresa));
 
-// Rotas protegidas (empresa logada)
 router.get('/produtos', authMiddleware, produtoController.listar);
 router.get('/produtos/:id', authMiddleware, produtoController.buscarPorId);
 router.post('/produtos', authMiddleware, produtoController.criar);

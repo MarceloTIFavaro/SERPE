@@ -1,0 +1,169 @@
+<%- include('partials/header') %>
+    <div class="panel">
+        <h2>Lançamento de Nova Venda Transacional</h2>
+        <form action="/vendas/nova" method="POST" id="form-venda">
+
+            <div class="form-group" style="max-width: 400px;">
+                <label>Selecione o Cliente Comprador *</label>
+                <select name="id_cliente" required>
+                    <% clientes.forEach(cli=> { %>
+                        <option value="<%= cli.id_cliente %>">
+                            <%= cli.nome_cli %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <div class="carrinho-secao">
+                <h3>Itens da Venda</h3>
+                <div class="form-grid" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label>Escolha o Produto</label>
+                        <select id="select-produto">
+                            <% produtos.forEach(prod=> { %>
+                                <option value="<%= prod.id_prod %>" data-preco="<%= prod.preco_venda %>"
+                                    data-estoque="<%= prod.qnt_estoque %>">
+                                    <%= prod.nome_prod %> (Estoque: <%= prod.qnt_estoque %>)
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="form-group" style="max-width: 120px;">
+                        <label>Quantidade</label>
+                        <input type="number" id="input-qtd" value="1" min="1">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="adicionarItem()">Adicionar ao Pedido</button>
+                </div>
+
+                <table class="tabela" style="margin-top: 1.5rem; background: white; border-radius: 6px;">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Qtd</th>
+                            <th>Preço Unitário</th>
+                            <th>Subtotal</th>
+                            <th style="width: 50px;">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="carrinho-linhas">
+                    </tbody>
+                </table>
+                <h3 align="right" style="margin-top: 1rem; color: var(--primary);">Total do Pedido: R$ <span
+                        id="venda-total">0.00</span></h3>
+            </div>
+
+            <input type="hidden" name="itens" id="itens-json-input">
+
+            <button type="submit" class="btn btn-success" style="margin-top: 1.5rem; width: 100%;">Finalizar e Registrar
+                Venda</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2>Histórico de Movimentações de Saída</h2>
+        <div class="table-responsive">
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Nº Pedido</th>
+                        <th>Cliente</th>
+                        <th>Data Emissão</th>
+                        <th>Valor Total</th>
+                        <th style="width: 100px;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% vendas.forEach(venda=> { %>
+                        <tr>
+                            <td>#<%= venda.id_venda %>
+                            </td>
+                            <td><strong>
+                                    <%= venda.nome_cli %>
+                                </strong></td>
+                            <td>
+                                <%= new Date(venda.data_venda).toLocaleString('pt-BR') %>
+                            </td>
+                            <td style="font-weight: 700; color: var(--success)">R$ <%= Number(venda.total).toFixed(2) %>
+                            </td>
+                            <td>
+                                <form action="/vendas/deletar/<%= venda.id_venda %>" method="POST"
+                                    onsubmit="return confirm('Deseja estornar esta venda? O estoque dos produtos será devolvido automaticamente.');">
+                                    <button type="submit" class="btn btn-danger btn-table">Estornar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let carrinho = [];
+
+        function adicionarItem() {
+            const select = document.getElementById('select-produto');
+            const inputQtd = document.getElementById('input-qtd');
+
+            const id_prod = select.value;
+            const nome_prod = select.options[select.selectedIndex].text.split(' (')[0];
+            const preco_unitario = parseFloat(select.options[select.selectedIndex].getAttribute('data-preco'));
+            const estoque = parseInt(select.options[select.selectedIndex].getAttribute('data-estoque'));
+            const quantidade = parseInt(inputQtd.value);
+
+            if (quantidade > estoque) {
+                alert('Atenção: Quantidade informada é superior ao volume em estoque!');
+                return;
+            }
+
+            // Verifica se o item já foi adicionado para consolidar quantidade
+            const itemExistente = carrinho.find(item => item.id_prod === id_prod);
+            if (itemExistente) {
+                if ((itemExistente.quantidade + quantidade) > estoque) {
+                    alert('Estoque máximo ultrapassado para adições repetidas!');
+                    return;
+                }
+                itemExistente.quantidade += quantidade;
+            } else {
+                carrinho.push({ id_prod, nome_prod, quantidade, preco_unitario });
+            }
+
+            atualizarInterfaceCarrinho();
+        }
+
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            atualizarInterfaceCarrinho();
+        }
+
+        function atualizarInterfaceCarrinho() {
+            const tbody = document.getElementById('carrinho-linhas');
+            let totalGeral = 0;
+
+            tbody.innerHTML = carrinho.map((item, index) => {
+                const subtotal = item.quantidade * item.preco_unitario;
+                totalGeral += subtotal;
+                return `
+                    <tr>
+                        <td><strong>${item.nome_prod}</strong></td>
+                        <td>${item.quantidade} un</td>
+                        <td>R$ ${item.preco_unitario.toFixed(2)}</td>
+                        <td><strong>R$ ${subtotal.toFixed(2)}</strong></td>
+                        <td><button type="button" class="btn btn-danger btn-table" onclick="removerItem(${index})">X</button></td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('venda-total').innerText = totalGeral.toFixed(2);
+            // Alimenta o input oculto para submissão nativa HTTP POST
+            document.getElementById('itens-json-input').value = JSON.stringify(carrinho);
+        }
+
+        document.getElementById('form-venda').addEventListener('submit', function (e) {
+            if (carrinho.length === 0) {
+                e.preventDefault();
+                alert('Adicione pelo menos um item ao pedido antes de salvar.');
+            }
+        });
+    </script>
+    <%- include('partials/footer') %>

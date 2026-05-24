@@ -3,7 +3,6 @@ const app = require('../app');
 const mdlAuth = require('../models/mdlAuth');
 const bcrypt = require('bcrypt');
 
-// Mock do Model para não precisar de banco real nos testes
 jest.mock('../models/mdlAuth');
 
 describe('Testes de Autenticação', () => {

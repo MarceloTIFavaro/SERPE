@@ -1,0 +1,68 @@
+:root {
+    --primary: #1e293b;
+    --primary-light: #334155;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+body { background-color: var(--bg-main); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
+
+/* Navbar */
+.navbar { background-color: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.navbar-brand { font-size: 1.5rem; font-weight: 700; color: white; text-decoration: none; }
+.navbar-nav a { color: #cbd5e1; text-decoration: none; margin-left: 1.5rem; font-weight: 500; transition: color 0.2s; }
+.navbar-nav a:hover, .navbar-nav a.active { color: white; }
+.btn-logout { background-color: var(--danger); padding: 0.5rem 1rem; border-radius: 6px; }
+
+/* Container */
+.container { max-width: 1200px; width: 100%; margin: 2rem auto; padding: 0 1.5rem; flex: 1; }
+
+/* Dashboard Cards Grid */
+.grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+.card-stat { background: var(--bg-card); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+.card-stat h3 { font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+.card-stat .valor { font-size: 2rem; font-weight: 700; color: var(--primary); }
+
+/* Painéis de Conteúdo */
+.panel { background: var(--bg-card); border: 1px solid var(--border); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 2rem; }
+.panel h2 { margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600; color: var(--primary); padding-bottom: 0.5rem; border-bottom: 2px solid var(--bg-main); }
+
+/* Formulários */
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: flex-end; }
+.form-group { display: flex; flex-direction: column; margin-bottom: 1rem; }
+.form-group label { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--primary-light); }
+input, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background-color: #fff; outline: none; transition: border-color 0.2s; }
+input:focus, select:focus { border-color: var(--accent); }
+
+/* Botões */
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: background-color 0.2s, opacity 0.2s; color: white; text-decoration: none; }
+.btn-primary { background-color: var(--accent); }
+.btn-primary:hover { background-color: var(--accent-hover); }
+.btn-success { background-color: var(--success); }
+.btn-danger { background-color: var(--danger); }
+.btn-table { padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: 6px; }
+
+/* Tabelas */
+.table-responsive { width: 100%; overflow-x: auto; margin-top: 1rem; }
+.tabela { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem; }
+.tabela th { background-color: var(--bg-main); color: var(--primary-light); font-weight: 600; padding: 1rem; border-bottom: 2px solid var(--border); }
+.tabela td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.tabela tr:hover { background-color: #f8fafc; }
+
+/* Estrutura Tela Login */
+.login-wrapper { display: flex; align-items: center; justify-content: center; height: 100vh; background-color: var(--primary); }
+.login-card { background: white; padding: 2.5rem; border-radius: 16px; width: 100%; max-width: 420px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
+.login-card h2 { text-align: center; margin-bottom: 2rem; font-size: 1.75rem; color: var(--primary); }
+.alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 500; }
+.alert-danger { background-color: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+
+/* Seção de Carrinho Multi-Itens */
+.carrinho-secao { margin-top: 1.5rem; background: var(--bg-main); padding: 1.5rem; border-radius: 8px; border: 1px dashed var(--border); }

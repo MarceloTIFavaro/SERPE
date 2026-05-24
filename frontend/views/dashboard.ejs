@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+    <div class="panel">
+        <h2>Painel Informativo de Indicadores</h2>
+        <div class="grid-stats">
+            <div class="card-stat">
+                <h3>Clientes Cadastrados</h3>
+                <div class="valor"><%= qtdClientes %></div>
+            </div>
+            <div class="card-stat">
+                <h3>Produtos em Catálogo</h3>
+                <div class="valor"><%= qtdProdutos %></div>
+            </div>
+            <div class="card-stat">
+                <h3>Vendas Realizadas</h3>
+                <div class="valor"><%= qtdVendas %></div>
+            </div>
+            <div class="card-stat" style="border-left: 4px solid var(--success);">
+                <h3>Faturamento Bruto</h3>
+                <div class="valor" style="color: var(--success);">R$ <%= faturamento %></div>
+            </div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Dados operacionais atualizados em tempo real a partir do servidor central.</p>
+    </div>
+<%- include('partials/footer') %>

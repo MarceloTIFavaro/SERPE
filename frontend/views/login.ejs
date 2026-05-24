@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Acesso - Sistema ERP</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="login-wrapper">
+    <div class="login-card">
+        <h2>Acesso Corporativo</h2>
+        
+        <% if (erro) { %>
+            <div class="alert alert-danger"><%= erro %></div>
+        <% } %>
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label>E-mail da Empresa</label>
+                <input type="email" name="email" required placeholder="exemplo@empresa.com">
+            </div>
+            <div class="form-group">
+                <label>Senha Operacional</label>
+                <input type="password" name="senha" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Entrar no Sistema</button>
+        </form>
+    </div>
+</body>
+</html>

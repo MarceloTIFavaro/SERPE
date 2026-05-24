@@ -78,13 +78,11 @@ exports.removerVendaEAtualizarEstoque = async (id_venda) => {
   try {
     await client.query('BEGIN');
 
-    // 1. Busca itens da venda para devolver ao estoque
     const itensRes = await client.query(
       `SELECT id_prod, quantidade FROM itens_venda WHERE id_venda = $1`,
       [id_venda]
     );
 
-    // 2. Devolve para o estoque
     for (const item of itensRes.rows) {
       await client.query(
         `UPDATE produto SET qnt_estoque = qnt_estoque + $1 WHERE id_prod = $2`,
@@ -92,10 +90,8 @@ exports.removerVendaEAtualizarEstoque = async (id_venda) => {
       );
     }
 
-    // 3. Deleta itens da venda
     await client.query(`DELETE FROM itens_venda WHERE id_venda = $1`, [id_venda]);
 
-    // 4. Deleta a venda
     const resVenda = await client.query(`DELETE FROM venda WHERE id_venda = $1`, [id_venda]);
 
     await client.query('COMMIT');
