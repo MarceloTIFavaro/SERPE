@@ -18,7 +18,10 @@
                 <label>Quantidade Inicial</label>
                 <input type="number" name="qnt_estoque" required placeholder="0">
             </div>
-            <button type="submit" class="btn btn-success">Salvar Produto</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Salvar Produto</button>
+            </div>
+
         </form>
     </div>
 
@@ -37,22 +40,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% produtos.forEach(prod => { %>
+                    <% produtos.forEach(prod=> { %>
                         <tr>
-                            <td>#<%= prod.id_prod %></td>
-                            <td><strong><%= prod.nome_prod %></strong></td>
-                            <td style="color: var(--success)">R$ <%= Number(prod.preco_venda).toFixed(2) %></td>
-                            <td style="color: var(--text-muted)">R$ <%= Number(prod.custo_prod).toFixed(2) %></td>
-                            <td><%= prod.qnt_estoque %> un</td>
+                            <td>#<%= prod.id_prod %>
+                            </td>
+                            <td><strong>
+                                    <%= prod.nome_prod %>
+                                </strong></td>
+                            <td style="color: var(--success)">R$ <%= Number(prod.preco_venda).toFixed(2) %>
+                            </td>
+                            <td style="color: var(--text-muted)">R$ <%= Number(prod.custo_prod).toFixed(2) %>
+                            </td>
                             <td>
-                                <form action="/produtos/deletar/<%= prod.id_prod %>" method="POST" onsubmit="return confirm('Deseja remover este item do catálogo?');">
+                                <%= prod.qnt_estoque %> un
+                            </td>
+                            <td>
+                                <form action="/produtos/deletar/<%= prod.id_prod %>" method="POST"
+                                    onsubmit="return confirm('Deseja remover este item do catálogo?');">
                                     <button type="submit" class="btn btn-danger btn-table">Excluir</button>
                                 </form>
                             </td>
                         </tr>
-                    <% }) %>
+                        <% }) %>
                 </tbody>
             </table>
         </div>
     </div>
-<%- include('partials/footer') %>
+    <%- include('partials/footer') %>

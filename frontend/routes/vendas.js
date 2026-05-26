@@ -11,7 +11,7 @@ router.get('/', authMiddleware, async (req, res) => {
         const config = getHeaders(req.token);
         const [resVendas, resClientes, resProdutos] = await Promise.all([
             axios.get(`${API_URL}/vendas`, config),
-            axios.get(`${API_URL}/clientes`, config),
+            axios.get(`${API_URL}/clientes`, config).catch(() => ({ data: [] })),
             axios.get(`${API_URL}/produtos`, config)
         ]);
 
@@ -22,7 +22,7 @@ router.get('/', authMiddleware, async (req, res) => {
             erro: null
         });
     } catch (error) {
-        res.render('vendas', { vendas: [], clientes: [], produtos: [], erro: 'Erro de conexão com o banco de dados.' });
+        res.render('vendas', { vendas: [], clientes: [], produtos: [], erro: 'Erro no banco.' });
     }
 });
 

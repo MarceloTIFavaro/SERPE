@@ -19,5 +19,5 @@ app.use('/vendas', require('./routes/vendas'));
 
 const PORT = 4000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor Frontend rodando em http://localhost:${PORT}`);
+    console.log("🚀 Servidor Frontend rodando em http://localhost:4000");
 });
