@@ -59,20 +59,42 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
         const produtos = Array.isArray(resProdutos.data) ? resProdutos.data : [];
         const vendas = Array.isArray(resVendas.data) ? resVendas.data : [];
 
-        const faturamentoTotal = vendas.reduce((acc, curr) => acc + Number(curr.total || 0), 0);
+        const hoje = new Date();
+        const mesAtual = hoje.getMonth();
+        const anoAtual = hoje.getFullYear();
+        const diaAtual = hoje.getDate();
+
+        let faturamentoTotal = 0;
+        let faturamentoMes = 0;
+        let faturamentoDia = 0;
+
+        vendas.forEach(v => {
+            const valor = Number(v.total || 0);
+            faturamentoTotal += valor;
+
+            const dataVenda = new Date(v.data_venda);
+            if (dataVenda.getFullYear() === anoAtual && dataVenda.getMonth() === mesAtual) {
+                faturamentoMes += valor;
+                if (dataVenda.getDate() === diaAtual) {
+                    faturamentoDia += valor;
+                }
+            }
+        });
 
         res.render('dashboard', {
             qtdClientes: clientes.length,
             qtdProdutos: produtos.length,
-            qtdVendas: vendas.length,
-            faturamento: faturamentoTotal.toFixed(2)
+            faturamentoTotal: faturamentoTotal.toFixed(2),
+            faturamentoMes: faturamentoMes.toFixed(2),
+            faturamentoDia: faturamentoDia.toFixed(2)
         });
     } catch (error) {
         res.render('dashboard', { 
             qtdClientes: 0, 
             qtdProdutos: 0, 
-            qtdVendas: 0, 
-            faturamento: '0.00' 
+            faturamentoTotal: '0.00',
+            faturamentoMes: '0.00',
+            faturamentoDia: '0.00'
         });
     }
 });

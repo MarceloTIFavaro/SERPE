@@ -14,35 +14,38 @@
         <% } %>
 
         <form action="/cadastro" method="POST">
-            <div class="form-group">
-                <label>CNPJ</label>
-                <input type="text" name="cnpj" required>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>CNPJ *</label>
+                <input type="text" name="cnpj" class="mask-cnpj" required placeholder="00.000.000/0000-00" minlength="18">
             </div>
-            <div class="form-group">
-                <label>Nome da Empresa</label>
-                <input type="text" name="nome_emp" required>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Nome da Empresa *</label>
+                <input type="text" name="nome_emp" required placeholder="Sua Empresa LTDA" minlength="3">
             </div>
-            <div class="form-group">
-                <label>Nome do Responsável</label>
-                <input type="text" name="nome_resp">
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>E-mail Corporativo *</label>
+                <input type="email" name="email_emp" required placeholder="contato@empresa.com">
             </div>
-            <div class="form-group">
-                <label>E-mail Corporativo</label>
-                <input type="email" name="email_emp" required>
-            </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 1rem;">
                 <label>Telefone</label>
-                <input type="text" name="telefone_emp">
+                <input type="text" name="telefone_emp" class="mask-telefone" placeholder="(00) 00000-0000" minlength="14">
             </div>
-            <div class="form-group">
-                <label>Senha de Acesso</label>
-                <input type="password" name="senha" required>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Senha de Acesso *</label>
+                <input type="password" name="senha" required placeholder="••••••••" minlength="6">
             </div>
             <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 1rem;">Finalizar Registro</button>
         </form>
-        <div style="text-align: center; margin-top: 1rem;">
-            <a href="/login">Já possui conta? Fazer Login</a>
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <a href="/login" style="color: var(--accent); text-decoration: none; font-weight: 600;">Já possui conta? Fazer Login</a>
         </div>
     </div>
+    <script src="https://unpkg.com/imask"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            IMask(document.querySelector('.mask-cnpj'), { mask: '00.000.000/0000-00' });
+            IMask(document.querySelector('.mask-telefone'), { mask: '(00) 00000-0000' });
+        });
+    </script>
 </body>
 </html>

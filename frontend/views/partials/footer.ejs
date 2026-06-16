@@ -1,4 +1,19 @@
 </main>
-</body>
+    <script src="https://unpkg.com/imask"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.mask-cnpj').forEach(el => {
+                IMask(el, { mask: '00.000.000/0000-00' });
+            });
 
+            document.querySelectorAll('.mask-telefone').forEach(el => {
+                IMask(el, { mask: '(00) 00000-0000' });
+            });
+
+            document.querySelectorAll('.mask-cpf').forEach(el => {
+                IMask(el, { mask: '000.000.000-00' });
+            });
+        });
+    </script>
+</body>
 </html>
