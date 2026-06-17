@@ -8,6 +8,14 @@ exports.buscarPorEmail = async (email) => {
     return result.rows[0];
 };
 
+exports.buscarPorCnpj = async (cnpj) => {
+    const result = await db.query(
+        `SELECT * FROM empresa WHERE cnpj = $1`,
+        [cnpj]
+    );
+    return result.rows[0];
+};
+
 exports.inserirEmpresa = async (dados) => {
     const { cnpj, nome_emp, nome_resp, email_emp, telefone_emp, senha } = dados;
     await db.query(

@@ -6,14 +6,14 @@ const authMiddleware = require('../middlewares/auth');
 const API_URL = 'http://localhost:3000';
 
 router.get('/login', (req, res) => {
-    res.render('login', { erro: null });
+    res.render('login', { erro: null, dados: {} });
 });
 
 router.post('/login', async (req, res) => {
     const { email, senha } = req.body || {};
 
     if (!email || !senha) {
-        return res.render('login', { erro: 'Preencha todos os campos corretamente.' });
+        return res.render('login', { erro: 'Preencha todos os campos corretamente.', dados: req.body });
     }
 
     try {
@@ -21,13 +21,13 @@ router.post('/login', async (req, res) => {
         res.cookie('token', resposta.data.token, { httpOnly: true });
         res.redirect('/dashboard');
     } catch (error) {
-        const msg = error.response?.data?.mensagem || 'Falha na autenticação do servidor.';
-        res.render('login', { erro: msg });
+        const msg = error.response?.data?.erro || error.response?.data?.mensagem || 'Falha na autenticação do servidor.';
+        res.render('login', { erro: msg, dados: req.body });
     }
 });
 
 router.get('/cadastro', (req, res) => {
-    res.render('cadastro', { erro: null });
+    res.render('cadastro', { erro: null, dados: {} });
 });
 
 router.post('/cadastro', async (req, res) => {
@@ -35,8 +35,8 @@ router.post('/cadastro', async (req, res) => {
         await axios.post(`${API_URL}/auth/registro`, req.body);
         res.redirect('/login');
     } catch (error) {
-        const msg = error.response?.data?.mensagem || 'Falha ao registrar a empresa.';
-        res.render('cadastro', { erro: msg });
+        const msg = error.response?.data?.erro || error.response?.data?.mensagem || 'Falha ao registrar a empresa.';
+        res.render('cadastro', { erro: msg, dados: req.body });
     }
 });
 

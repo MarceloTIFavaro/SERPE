@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS empresa CASCADE;
 
 -- Criar tabela empresa
 CREATE TABLE empresa (
-	cnpj VARCHAR(14) NOT NULL,
+	cnpj VARCHAR(50) NOT NULL,
 	nome_emp VARCHAR(100) NOT NULL,
 	senha VARCHAR(255), -- adicionei atributo senha para gerar login no site	
 	nome_resp VARCHAR(50),
 	email_emp VARCHAR(50) UNIQUE, -- deixei e-mail unique para mais segurança
-	telefone_emp VARCHAR(15),
+	telefone_emp VARCHAR(50),
 	CONSTRAINT pk_empresa PRIMARY KEY (cnpj)
 );
 

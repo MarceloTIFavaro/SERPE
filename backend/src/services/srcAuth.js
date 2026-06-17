@@ -11,6 +11,11 @@ exports.registerEmpresa = async (dados) => {
         throw new AppError('Email já cadastrado', 400);
     }
 
+    const cnpjExistente = await mdlAuth.buscarPorCnpj(dados.cnpj);
+    if (cnpjExistente) {
+        throw new AppError('CNPJ já cadastrado', 400);
+    }
+
     const senhaHash = await bcrypt.hash(dados.senha, 10);
 
     try {
@@ -20,7 +25,7 @@ exports.registerEmpresa = async (dados) => {
         });
     } catch (error) {
         if (error.code === '23505') {
-            throw new AppError('CNPJ ou Email já cadastrado', 400);
+            throw new AppError('Erro ao cadastrar: Registro duplicado', 400);
         }
         throw error;
     }
