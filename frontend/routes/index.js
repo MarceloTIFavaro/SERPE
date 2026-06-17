@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const authMiddleware = require('../middlewares/auth');
 
-const API_URL = 'http://localhost:3000';
+const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 router.get('/login', (req, res) => {
     res.render('login', { erro: null });
