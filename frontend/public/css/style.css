@@ -335,3 +335,47 @@ input:valid:not(:placeholder-shown) {
 .toggle-password:hover {
     color: var(--primary);
 }
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .navbar-nav a {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+        text-align: center;
+    }
+
+    .navbar-nav a.btn-danger {
+        margin-left: 0;
+    }
+
+    .container {
+        padding: 0 1rem;
+        margin: 1rem auto;
+    }
+
+    .panel {
+        padding: 1.5rem 1rem;
+    }
+
+    .login-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        width: auto;
+    }
+
+    .grid-stats {
+        grid-template-columns: 1fr;
+    }
+}
