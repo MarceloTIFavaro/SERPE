@@ -108,7 +108,7 @@ exports.listar = async () => {
   const result = await db.query(
     `SELECT v.id_venda, v.id_cliente, c.nome_cli, v.data_venda, v.total
      FROM venda v
-     JOIN cliente c ON c.id_cliente = v.id_cliente
+     LEFT JOIN cliente c ON c.id_cliente = v.id_cliente
      ORDER BY v.id_venda DESC`
   );
   return result.rows;
@@ -118,7 +118,7 @@ exports.buscarDetalhadaPorId = async (id_venda) => {
   const vendaRes = await db.query(
     `SELECT v.id_venda, v.id_cliente, c.nome_cli, c.email_cli, c.telefone_cli, v.data_venda, v.total
      FROM venda v
-     JOIN cliente c ON c.id_cliente = v.id_cliente
+     LEFT JOIN cliente c ON c.id_cliente = v.id_cliente
      WHERE v.id_venda = $1`,
     [id_venda]
   );
@@ -129,7 +129,7 @@ exports.buscarDetalhadaPorId = async (id_venda) => {
     `SELECT iv.id_item, iv.id_prod, p.nome_prod, iv.quantidade, iv.preco_unitario,
             (iv.quantidade * iv.preco_unitario) AS subtotal
      FROM itens_venda iv
-     JOIN produto p ON p.id_prod = iv.id_prod
+     LEFT JOIN produto p ON p.id_prod = iv.id_prod
      WHERE iv.id_venda = $1
      ORDER BY iv.id_item ASC`,
     [id_venda]

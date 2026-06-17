@@ -38,24 +38,24 @@ CREATE TABLE cliente (
 -- Criar tabela venda
 CREATE TABLE venda (
 	id_venda SERIAL,
-	id_cliente INT NOT NULL,
+	id_cliente INT,
 	quantidade INT,
 	data_venda TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	total DECIMAL (10,2),
 	CONSTRAINT pk_venda PRIMARY KEY (id_venda),
-	CONSTRAINT pk_venda_cli FOREIGN KEY (id_cliente) REFERENCES cliente
+	CONSTRAINT pk_venda_cli FOREIGN KEY (id_cliente) REFERENCES cliente ON DELETE SET NULL
 );
 
 -- Criar tabela itens_venda
 CREATE TABLE itens_venda (
     id_item SERIAL,
     id_venda INT NOT NULL,
-    id_prod INT NOT NULL,
+    id_prod INT,
     quantidade INT NOT NULL,
     preco_unitario DECIMAL(10, 2),
     CONSTRAINT pk_itens_venda PRIMARY KEY (id_item),
     CONSTRAINT fk_item_venda FOREIGN KEY (id_venda) REFERENCES venda (id_venda),
-    CONSTRAINT fk_item_prod FOREIGN KEY (id_prod) REFERENCES produto (id_prod)
+    CONSTRAINT fk_item_prod FOREIGN KEY (id_prod) REFERENCES produto (id_prod) ON DELETE SET NULL
 );
 
 -- Cadastrando cliente 

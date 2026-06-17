@@ -78,7 +78,7 @@
                             <td>#<%= venda.id_venda %>
                             </td>
                             <td><strong>
-                                    <%= venda.nome_cli %>
+                                    <%= venda.nome_cli || 'Cliente Excluído' %>
                                 </strong></td>
                             <td>
                                 <%= new Date(venda.data_venda).toLocaleString('pt-BR') %>
