@@ -59,10 +59,19 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
         const produtos = Array.isArray(resProdutos.data) ? resProdutos.data : [];
         const vendas = Array.isArray(resVendas.data) ? resVendas.data : [];
 
-        const hoje = new Date();
-        const mesAtual = hoje.getMonth();
-        const anoAtual = hoje.getFullYear();
-        const diaAtual = hoje.getDate();
+        const dataSelecionada = req.query.data;
+        let dataBase;
+        
+        if (dataSelecionada) {
+            const [ano, mes, dia] = dataSelecionada.split('-');
+            dataBase = new Date(ano, mes - 1, dia);
+        } else {
+            dataBase = new Date();
+        }
+
+        const mesAtual = dataBase.getMonth();
+        const anoAtual = dataBase.getFullYear();
+        const diaAtual = dataBase.getDate();
 
         let faturamentoTotal = 0;
         let faturamentoMes = 0;
@@ -86,7 +95,8 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
             qtdProdutos: produtos.length,
             faturamentoTotal: faturamentoTotal.toFixed(2),
             faturamentoMes: faturamentoMes.toFixed(2),
-            faturamentoDia: faturamentoDia.toFixed(2)
+            faturamentoDia: faturamentoDia.toFixed(2),
+            dataSelecionada: dataSelecionada || ''
         });
     } catch (error) {
         res.render('dashboard', { 
@@ -94,7 +104,8 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
             qtdProdutos: 0, 
             faturamentoTotal: '0.00',
             faturamentoMes: '0.00',
-            faturamentoDia: '0.00'
+            faturamentoDia: '0.00',
+            dataSelecionada: req.query.data || ''
         });
     }
 });

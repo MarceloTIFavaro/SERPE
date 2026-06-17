@@ -1,9 +1,19 @@
 <%- include('partials/header') %>
     <div class="panel">
         <h2>Painel Central de Faturamento e Operações</h2>
+        
+        <form method="GET" action="/dashboard" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+            <label for="dataFiltro" style="font-weight: 500;">Filtrar por data:</label>
+            <input type="date" id="dataFiltro" name="data" value="<%= typeof dataSelecionada !== 'undefined' ? dataSelecionada : '' %>" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" style="padding: 8px 16px; background-color: var(--accent, #007bff); color: white; border: none; border-radius: 4px; cursor: pointer;">Filtrar</button>
+            <% if (typeof dataSelecionada !== 'undefined' && dataSelecionada) { %>
+                <a href="/dashboard" style="padding: 8px 16px; background-color: #6c757d; color: white; border: none; border-radius: 4px; text-decoration: none; font-size: 14px; display: flex; align-items: center;">Limpar</a>
+            <% } %>
+        </form>
+
         <div class="grid-stats">
             <div class="card-stat" style="border-left: 4px solid var(--accent);">
-                <h3>Faturamento de Hoje</h3>
+                <h3>Faturamento do Dia</h3>
                 <div class="valor" style="color: var(--accent);">R$ <%= faturamentoDia %></div>
             </div>
             <div class="card-stat" style="border-left: 4px solid #0ea5e9;">
